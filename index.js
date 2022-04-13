@@ -42,11 +42,11 @@ const init = async () => {
         
     })
     app.post('/addUser', async (req, res) => {
+        const group = req.body.group
+        const user = req.body.user
+        const userId = user.includes('@s.whatsapp.net') ? user : user + '@s.whatsapp.net'
+        const groupId = group.includes('@g.us') ? group : group + '@g.us'
         try{
-            const group = req.body.group
-            const user = req.body.user
-            const userId = user.includes('@s.whatsapp.net') ? user : user + '@s.whatsapp.net'
-            const groupId = group.includes('@g.us') ? group : group + '@g.us'
             console.log(chalk.blue('Group: ') + chalk.green(group) + chalk.blue(' User: ') + chalk.green(user))
             await wa.groupParticipantsUpdate(groupId, [userId], 'add')
             res.status(200).json({
@@ -62,8 +62,6 @@ const init = async () => {
                 error: error
             })
         }
-
-        
     })
     app.listen(process.env.PORT, () => {
         console.log(chalk.green(`Server running on port ${process.env.PORT}`))
