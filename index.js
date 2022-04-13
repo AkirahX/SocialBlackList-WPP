@@ -14,34 +14,40 @@ const app = express()
 const init = async () => {
     const wa = await start()
     wa.ev.on('group-participants.update', async (update) => {
-        let id = update.id
-        let participants = update.participants
-        let action = update.action
-        console.log(chalk.blue('ID: ') + chalk.green(id) + chalk.blue(' Participants: ') + chalk.green(participants) + chalk.blue(' Action:') + chalk.green(action))
-        if(action === 'add') {
-            const chk = await check(participants[0])
-            if(chk.exists) {
-                let text = `_The user ${chk.whatsappId} is on the Social Black List_
+        try{
+            let id = update.id
+            let participants = update.participants
+            let action = update.action
+            console.log(chalk.blue('ID: ') + chalk.green(id) + chalk.blue(' Participants: ') + chalk.green(participants) + chalk.blue(' Action:') + chalk.green(action))
+            if(action === 'add') {
+                const chk = await check(participants[0])
+                if(chk.exists) {
+                    let text = `_The user ${chk.whatsappId} is on the Social Black List_
 
-_Description: ${chk.description}_`
-                try{
-                    await wa.groupParticipantsUpdate(id, [participants[0]], 'remove')
-                } catch(error) {
-                    await wa.sendMessage(id, {text: '_It was not possible to remove the user because this instance must be the administrator of the group._'})
-                    console.log(error)
+    _Description: ${chk.description}_`
+                    try{
+                        await wa.groupParticipantsUpdate(id, [participants[0]], 'remove')
+                    } catch(error) {
+                        await wa.sendMessage(id, {text: '_It was not possible to remove the user because this instance must be the administrator of the group._'})
+                        console.log(error)
+                    }
+                    await wa.sendMessage(id, {text: text})
+                } else {
+                    console.log(chalk.blue('User not on the Social Black List'))
                 }
-                await wa.sendMessage(id, {text: text})
-            } else {
-                console.log(chalk.blue('User not on the Social Black List'))
             }
+        } catch (e) {
+            console.log(e)
         }
+        
     })
     app.post('/addUser', async (req, res) => {
-        const {group, user} = req.body
-        const userId = user.includes('@s.whatsapp.net') ? user : user + '@s.whatsapp.net'
-        const groupId = group.includes('@g.us') ? group : group + '@g.us'
-        console.log(chalk.blue('Group: ') + chalk.green(group) + chalk.blue(' User: ') + chalk.green(user))
         try{
+            const group = req.body.group
+            const user = req.body.user
+            const userId = user.includes('@s.whatsapp.net') ? user : user + '@s.whatsapp.net'
+            const groupId = group.includes('@g.us') ? group : group + '@g.us'
+            console.log(chalk.blue('Group: ') + chalk.green(group) + chalk.blue(' User: ') + chalk.green(user))
             await wa.groupParticipantsUpdate(groupId, [userId], 'add')
             res.status(200).json({
                 user: userId,
