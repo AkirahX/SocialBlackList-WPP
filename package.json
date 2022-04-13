@@ -15,6 +15,7 @@
     "axios": "^0.26.1",
     "chalk": "^2.4.1",
     "dotenv": "^16.0.0",
+    "express": "^4.17.3",
     "pino": "^7.10.0",
     "qrcode-terminal": "^0.12.0"
   }
