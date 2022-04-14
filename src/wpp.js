@@ -16,7 +16,7 @@ const start = async () => {
 
     const wa = makeWASocket({
         version,
-        logger: P({ level: 'warn' }),
+        logger: P({ level: 'silent' }),
         printQRInTerminal: true,
         auth: state,
         getMessage: async key => {

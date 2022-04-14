@@ -1,18 +1,14 @@
 require('dotenv').config()
 require('./config/wpp')
+require('./src/server')
 const start = require('./src/wpp')
 const getStatus = require('./src/status')
 const {getMessageType, getText} = require('./src/messageVerify')
 const chalk = require('chalk')
 const {check} = require('./src/get')
-const express = require('express')
-
-const app = express()
-
-//create a server
 
 const init = async () => {
-    const wa = await start()
+    global.wa = await start()
     wa.ev.on('group-participants.update', async (update) => {
         try{
             let id = update.id
@@ -41,32 +37,6 @@ const init = async () => {
         }
         
     })
-    app.post('/addUser', async (req, res) => {
-        const group = req.body.group
-        const user = req.body.user
-        const userId = user.includes('@s.whatsapp.net') ? user : user + '@s.whatsapp.net'
-        const groupId = group.includes('@g.us') ? group : group + '@g.us'
-        try{
-            console.log(chalk.blue('Group: ') + chalk.green(group) + chalk.blue(' User: ') + chalk.green(user))
-            await wa.groupParticipantsUpdate(groupId, [userId], 'add')
-            res.status(200).json({
-                user: userId,
-                group: groupId,
-                status: 'success'
-            })
-        } catch(error) {
-            res.status(500).json({
-                user: userId,
-                group: groupId,
-                status: 'error',
-                error: error
-            })
-        }
-    })
-    app.listen(process.env.PORT, () => {
-        console.log(chalk.green(`Server running on port ${process.env.PORT}`))
-    })
-    
 }
 
 init()
