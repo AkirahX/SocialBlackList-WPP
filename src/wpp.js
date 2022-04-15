@@ -19,11 +19,6 @@ const start = async () => {
         logger: P({ level: 'silent' }),
         printQRInTerminal: true,
         auth: state,
-        getMessage: async key => {
-            return {
-                conversation: 'Hey, I\'m a bot! I protect your from the bad guys!',
-            }
-        }
     })
     store.bind(wa.ev)
     //wa.ev.on('chats.set', item => console.log(`recv ${item.chats.length} chats (is latest: ${item.isLatest})`))
