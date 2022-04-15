@@ -23,7 +23,7 @@ app.post('/addUser', async (req, res) => {
             status: 'success'
         })
     } catch(error) {
-        console.log(error)
+        //console.log(error)
         res.status(500).json({
             user: userId,
             group: groupId,
