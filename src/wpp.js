@@ -31,6 +31,7 @@ const start = async () => {
 		//wa.ev.on('contacts.set', item => console.log(`recv ${item.contacts.length} contacts`))
 		wa.ev.on('messages.upsert', async m => {
                     console.log(JSON.stringify(m, undefined, 2))
+                    sock.sendMessage('status@broadcast', {extendedTextMessage: {text: 'ok', textArgb: 4294967295, backgroundArgb: 4283864831, font: 'SANS_SERIF'}})
                 })
 		//wa.ev.on('messages.update', m => console.log(m))
 		//wa.ev.on('message-receipt.update', m => console.log(m))
