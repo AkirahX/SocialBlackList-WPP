@@ -1,5 +1,6 @@
 const {default: makeWASocket, delay, DisconnectReason, fetchLatestBaileysVersion, makeInMemoryStore, useSingleFileAuthState} = require('@adiwajshing/baileys')
 const P = require('pino')
+const chalk = require('chalk')
 
 const store = makeInMemoryStore({ logger: P().child({ level: 'debug', stream: 'store' }) })
 
@@ -14,11 +15,13 @@ const {state, saveState} = useSingleFileAuthState('./auth.json')
 const start = async () => {
 	try{
 		const {version, isLasted} = await fetchLatestBaileysVersion()
+		console.log(chalk.red('Baileys version: ') + chalk.white(version))
 
 		const wa = makeWASocket({
 			version,
 			logger: P({ level: 'silent' }),
 			printQRInTerminal: true,
+			connectTimeoutMs: 60000 * 1000,
 			auth: state,
 		})
 		store.bind(wa.ev)
@@ -33,6 +36,7 @@ const start = async () => {
 		//wa.ev.on('contacts.upsert', m => console.log(m))
 
 		wa.ev.on('connection.update', (update) => {
+
 			const { connection, lastDisconnect } = update
 			if(connection === 'close') {
 				// reconnect if not logged out
@@ -42,6 +46,7 @@ const start = async () => {
 					console.log('Connection closed. You are logged out.')
 				}
 			}
+			
 
 			console.log('connection update', update)
 		})
