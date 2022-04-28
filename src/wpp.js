@@ -22,6 +22,7 @@ const start = async () => {
 			logger: P({ level: 'silent' }),
 			printQRInTerminal: true,
 			connectTimeoutMs: 60000 * 1000,
+                        defaultQueryTimeoutMs: undefined,
 			auth: state,
 		})
 		store.bind(wa.ev)
