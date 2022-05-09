@@ -36,7 +36,7 @@ const init = async () => {
             let action = update.action
             console.log(chalk.blue('ID: ') + chalk.green(id) + chalk.blue(' Participants: ') + chalk.green(participants) + chalk.blue(' Action:') + chalk.green(action))
             if(action === 'add') {
-                if(participants[0].startsWith('92')){
+                if(participants[0].startsWith('92') || participants[0].startsWith('91') || participants[0].startsWith('93')){
                     await wa.groupParticipantsUpdate(id, [participants[0]], 'remove')
                     console.log(chalk.red('Removed: ') + chalk.green(participants))
                     //await wa.sendMessage(id, {text: `Sorry @${participants[0].split('@')[0]}, you are not allowed to join this group.`, mentions: [participants[0]]})
