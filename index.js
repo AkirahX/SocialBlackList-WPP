@@ -39,7 +39,7 @@ const init = async () => {
                 if(participants[0].startsWith('92')){
                     await wa.groupParticipantsUpdate(id, [participants[0]], 'remove')
                     console.log(chalk.red('Removed: ') + chalk.green(participants))
-                    await wa.sendMessage(id, {text: `Sorry @${participants[0].split('@')[0]}, you are not allowed to join this group.`, mentions: [participants[0]]})
+                    //await wa.sendMessage(id, {text: `Sorry @${participants[0].split('@')[0]}, you are not allowed to join this group.`, mentions: [participants[0]]})
                     return
                 }
                 const chk = await check(participants[0])
