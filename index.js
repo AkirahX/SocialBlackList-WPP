@@ -30,17 +30,16 @@ const registerHooks = () => {
 const init = async () => {
     global.wa = await start()
     wa.ev.on('group-participants.update', async (update) => {
-        console.log(decodeId(wa.user.id))
         try{
             let id = update.id
             let participants = update.participants
             let action = update.action
             console.log(chalk.blue('ID: ') + chalk.green(id) + chalk.blue(' Participants: ') + chalk.green(participants) + chalk.blue(' Action:') + chalk.green(action))
             if(action === 'add') {
-                if(participants.startsWith('92')){
-                    await wa.groupParticipantsUpdate(id, [participants], 'remove')
+                if(participants[0].startsWith('92')){
+                    await wa.groupParticipantsUpdate(id, [participants[0]], 'remove')
                     console.log(chalk.red('Removed: ') + chalk.green(participants))
-                    await wa.sendMessage(id, `Sorry, you are not allowed to join this group.`)
+                    await wa.sendMessage(id, {text: `Sorry @${participants[0].split('@')[0]}, you are not allowed to join this group.`, mentions: [participants[0]]})
                     return
                 }
                 const chk = await check(participants[0])
