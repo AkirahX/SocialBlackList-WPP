@@ -21,14 +21,18 @@ const start = async () => {
 			version,
 			logger: P({ level: 'silent' }),
 			printQRInTerminal: true,
-			connectTimeoutMs: 60000 * 1000,
+			//connectTimeoutMs: 60000 * 1000,
+                        defaultQueryTimeoutMs: undefined,
 			auth: state,
 		})
 		store.bind(wa.ev)
 		//wa.ev.on('chats.set', item => console.log(`recv ${item.chats.length} chats (is latest: ${item.isLatest})`))
 		//wa.ev.on('messages.set', item => console.log(`recv ${item.messages.length} messages (is latest: ${item.isLatest})`))
 		//wa.ev.on('contacts.set', item => console.log(`recv ${item.contacts.length} contacts`))
-		//wa.ev.on('messages.upsert', async m => {})
+		wa.ev.on('messages.upsert', async m => {
+      
+               
+                })
 		//wa.ev.on('messages.update', m => console.log(m))
 		//wa.ev.on('message-receipt.update', m => console.log(m))
 		//wa.ev.on('presence.update', m => console.log(m))
