@@ -8,6 +8,7 @@ const chalk = require('chalk')
 const {check} = require('./src/get')
 const { jidDecode } = require('@adiwajshing/baileys')
 const webHooks = require('node-webhooks')
+const cron = require('node-cron')
 
 const decodeId = (id) => {
     if(!id) return id
@@ -64,6 +65,16 @@ _Description: ${chk.description}_`
         }
         
     })
+    //Create a cron job to check the status of the bot
+    cron.schedule('*/5 * * * *', async () => {
+        try{
+            await wa.sendMessage('5511973584242@s.whatsapp.net',  {text: '_Checking the status of the bot..._'})
+        } catch(error) {
+            console.log(error)
+        }
+    })
+
+    
 }
 
 init()
