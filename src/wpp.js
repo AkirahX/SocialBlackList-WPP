@@ -21,6 +21,7 @@ const start = async () => {
 			version,
 			logger: P({ level: 'silent' }),
 			printQRInTerminal: true,
+                        keepAliveIntervalMs: 60 * 60 * 1000,
 			//connectTimeoutMs: 60000 * 1000,
                         defaultQueryTimeoutMs: undefined,
 			auth: state,
